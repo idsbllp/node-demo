@@ -12,7 +12,6 @@ function getpic (req, res) {
         res.write(requestBody);
         res.end();
     });
-    
 }
 
 module.exports = getpic;

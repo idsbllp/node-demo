@@ -22,17 +22,6 @@
             };
         },
 
-        componentDidMount: function() {
-            $.get(this.props.promise, function(result) {
-                var list = result.items[0];
-                if (this.isMounted()) {
-                    this.setState({
-                        value: list.id
-                    });
-                }
-            }.bind(this));
-        },
-
         clickHander: function (event) {
             this.setState({
                 value: $('#input').val()

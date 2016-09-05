@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>gitpic</title>
+    <script src="./js/react.js"></script>
+    <script src="./js/react-dom.js"></script>
+    <script src="./js/browser.min.js"></script>
+    <script src="./js/jquery.js"></script>
+    <style type="text/css">
+        .my {
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="show_img">
+        <img src="">
+    </div>
+    <script type="text/babel">
+        var Pic = React.createClass({
+            getInitialState: function () {
+                return {
+                    picurl: ''
+                }
+            },
+
+            componentDidMount: function () {
+                $.get('./showpic', function (data) {
+                    console.log(data);
+                    this.setState({
+                        picurl: data
+                    })
+                }.bind(this));
+            },
+
+            render: function ()  {
+                var picurl = this.state.picurl;
+                return (
+                    <img className="my" src={picurl} />
+                )
+            }
+
+        })
+        ReactDOM.render(
+            <Pic />,
+            $('.show_img')[0]
+        )
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>在线</title>
+    <script src="./js/react.js"></script>
+    <script src="./js/react-dom.js"></script>
+    <script src="./js/browser.min.js"></script>
+    <script src="./js/jquery.js"></script>
+</head>
+<body>
+
+<div id="example"></div>
+
+<script type="text/babel">
+
+    
+    var MyAjax = React.createClass({
+        getInitialState: function () {
+            return {
+                value: ' '
+            };
+        },
+
+        componentDidMount: function() {
+            $.get(this.props.promise, function(result) {
+                var list = result.items[0];
+                if (this.isMounted()) {
+                    this.setState({
+                        value: list.id
+                    });
+                }
+            }.bind(this));
+        },
+
+        clickHander: function (event) {
+            this.setState({
+                value: $('#input').val()
+            });
+        },
+
+        getUrl: function () {
+            $.post('./index', {value: $('#input').val()}, function (data) {
+                data = JSON.parse(data);
+                this.setState({
+                    value : data.rows.map(function(row) {
+                        return (
+                            <div>{row['xh']} {row['xm']} <a href={'showpic?xh='+row['xh']}> {'查看'}</a></div>
+                        )
+                    })
+                })
+                
+                console.log(data);
+            }.bind(this));
+        },
+
+        render: function () {
+            var value = this.state.value;
+            return (
+                <div>
+                    <input type="text" name="name" placeholder="xuehao" id="input" />
+                    <input type="submit" id="submit" value="提交" onClick={this.getUrl} />
+                    <div className="api">{value}</div>
+                </div>
+            );
+        }
+    });
+
+    ReactDOM.render(
+        <MyAjax promise='https://api.github.com/search/repositories?q=javascript&sort=stars' />,
+        $('#example')[0]
+    )
+</script>
+
+</body>
+</html>
